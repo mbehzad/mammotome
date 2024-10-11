@@ -943,7 +943,7 @@ async function loadModulePlugin(name, ...args) {
       })();
     })
     : Promise.resolve();
-  return Promise.all([cssLoaded, decorationComplete])
+  return Promise.all([/*cssLoaded,*/ decorationComplete])
     .then(([, api]) => api);
 }
 

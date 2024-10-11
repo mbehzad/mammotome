@@ -18,8 +18,6 @@ import {
   decorateSupScriptInTextBelow,
 } from './lib-franklin.js';
 
-console.log(1);
-
 const LCP_BLOCKS = ['hero', 'product-reference', 'product-support']; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'mammotome'; // add your RUM generation information here
 
