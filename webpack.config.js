@@ -8,7 +8,7 @@ const cssfiles = globSync(['styles/**/*.css', 'blocks/**/*.css', 'plugins/**/*.c
   .map((filepath) => `./${filepath.replaceAll(path.sep, '/')}`);
 
 module.exports = {
-  mode: 'production', // 'production' | ' development'
+  mode: 'development', // 'production' | ' development'
   devtool: false,
   entry: {
     main: './scripts/scripts.js',
