@@ -129,12 +129,14 @@ function buildHeroBlock(main) {
  * load fonts.css and set a session storage flag
  */
 async function loadFonts() {
+  /*
   await loadCSS(`${window.hlx.codeBasePath}/styles/fonts.css`, null);
   try {
     if (!window.location.hostname.includes('localhost')) sessionStorage.setItem('fonts-loaded', 'true');
   } catch (e) {
     // do nothing
   }
+  */
 }
 
 /**
@@ -240,7 +242,7 @@ export async function decorateMain(main) {
   // if the page contains a history section.
   const section = main.querySelector('.section.our-history');
   if (section) {
-    const { decorateHistorySection, observeHistorySection } = await import('./lib-history-section.js');
+    const { decorateHistorySection, observeHistorySection } = await import(/* webpackMode: "eager" */'./lib-history-section.js');
     await decorateHistorySection(section);
     await observeHistorySection(section);
   }
@@ -307,7 +309,8 @@ async function loadLazy(doc) {
   await loadHeader(doc.querySelector('header'));
   await loadFooter(doc.querySelector('footer'));
 
-  loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`, null);
+  // is empty anyways
+  //loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`, null);
   loadFonts();
 
   addFavIcon(`${window.hlx.codeBasePath}/styles/icons/favicon-32x32.png`);
@@ -366,8 +369,8 @@ function loadDelayed() {
     window.hlx.plugins.load('delayed');
     window.hlx.plugins.run('loadDelayed');
     // eslint-disable-next-line import/no-cycle
-    return import('./delayed.js');
-  }, 3000);
+    return import(/* webpackMode: "eager" */'./delayed.js');
+  }, 0);
   // load anything that can be postponed to the latest here
 }
 

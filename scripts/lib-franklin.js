@@ -922,16 +922,16 @@ export function buildBlock(blockName, content) {
  * @param {string} [cssPath] An optional CSS file to load
  * @param {object[]} [args] Parameters to be passed to the default export when it is called
  */
-async function loadModule(name, jsPath, cssPath, ...args) {
-  const cssLoaded = cssPath
+async function loadModulePlugin(name, ...args) {
+  /*const cssLoaded = cssPath
     ? new Promise((resolve) => { loadCSS(cssPath, resolve); })
-    : Promise.resolve();
-  const decorationComplete = jsPath
+    : Promise.resolve();*/
+  const decorationComplete = true
     ? new Promise((resolve) => {
       (async () => {
         let mod;
         try {
-          mod = await import(jsPath);
+          mod = await import(/* webpackMode: "eager" */`../plugins/${name}/src/index.js`);
           if (mod.default) {
             await mod.default.apply(null, args);
           }
@@ -944,6 +944,38 @@ async function loadModule(name, jsPath, cssPath, ...args) {
     })
     : Promise.resolve();
   return Promise.all([cssLoaded, decorationComplete])
+    .then(([, api]) => api);
+}
+
+/**
+ * Loads JS and CSS for a module and executes it's default export.
+ * @param {string} name The module name
+ * @param {string} jsPath The JS file to load
+ * @param {string} [cssPath] An optional CSS file to load
+ * @param {object[]} [args] Parameters to be passed to the default export when it is called
+ */
+async function loadModuleBlock(name, ...args) {
+  /*const cssLoaded = cssPath
+    ? new Promise((resolve) => { loadCSS(cssPath, resolve); })
+    : Promise.resolve();*/
+  const decorationComplete = true
+    ? new Promise((resolve) => {
+      (async () => {
+        let mod;
+        try {
+          mod = await import(/* webpackMode: "eager" */`../blocks/${name}/${name}.js`);
+          if (mod.default) {
+            await mod.default.apply(null, args);
+          }
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.log(`failed to load module for ${name}`, error);
+        }
+        resolve(mod);
+      })();
+    })
+    : Promise.resolve();
+  return Promise.all([/*cssLoaded, */decorationComplete])
     .then(([, api]) => api);
 }
 
@@ -974,7 +1006,7 @@ export async function loadBlock(block) {
     block.dataset.blockStatus = 'loading';
     const { blockName, cssPath, jsPath } = getBlockConfig(block);
     try {
-      await loadModule(blockName, jsPath, cssPath, block);
+      await loadModuleBlock(blockName, block);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(`failed to load block ${blockName}`, error);
@@ -1273,8 +1305,8 @@ class PluginsRegistry {
           // If the plugin has a default export, it will be executed immediately
           const pluginApi = (await loadModule(
             key,
-            !plugin.url.endsWith('.js') ? `${plugin.url}/${key}.js` : plugin.url,
-            !plugin.url.endsWith('.js') ? `${plugin.url}/${key}.css` : null,
+            //!plugin.url.endsWith('.js') ? `${plugin.url}/${key}.js` : plugin.url,
+            //!plugin.url.endsWith('.js') ? `${plugin.url}/${key}.css` : null,
             document,
             plugin.options,
             executionContext,

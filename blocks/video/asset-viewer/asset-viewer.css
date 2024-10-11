@@ -35,7 +35,7 @@
 }
 
 .asset-viewer-close {
-    content: url("close.svg");
+    content:/* webpackIgnore: true */ url("close.svg");
 }
 
 .asset-viewer-close,
@@ -47,7 +47,7 @@
 }
 
 .asset-viewer-fullscreen {
-    content: url("full-screen.svg");
+    content:/* webpackIgnore: true */ url("full-screen.svg");
     width: 25px;
     padding: 10px;
 }

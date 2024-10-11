@@ -42,7 +42,7 @@
 main .section.form-container {
     padding: var(--form-container-padding);
     font-family: var(--mt-form-font-family);
-    background-image: url('../../styles/icons/Mammotome-BG_Pattern-1.svg');
+    background-image: /* webpackIgnore: true */ url('/styles/icons/Mammotome-BG_Pattern-1.svg');
     background-position: top center;
     background-repeat: repeat;
     background-size: 60px auto;
@@ -270,7 +270,7 @@ main .form-file-wrapper .file-description {
 main .form-file-wrapper .file-description button {
     --form-button-padding: 15px;
 
-    background: url("/icons/trash.svg") no-repeat;
+    background: /* webpackIgnore: true */ url("/icons/trash.svg") no-repeat;
     width: unset;
     border: unset;
     text-align: center;
