@@ -68,7 +68,7 @@ function getConfig(block) {
   }
 
   return Array.from(block.children).map((slide) => {
-    const alignValue = slide.children[1].innerText.replace(/[\n\s]/g, '');
+    const alignValue = slide.children[1].textContent.replace(/[\n\s]/g, '');
     const align = checkAlign(alignValue) ? alignValue : 'left';
     const imgAlign = align === 'center' || align === 'right' ? 'left' : 'right';
     slide.children[1].remove();
