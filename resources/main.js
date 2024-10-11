@@ -6791,6 +6791,7 @@ async function loadBlock(block) {
       console.log(`failed to load block ${blockName}`, error);
     }
     block.dataset.blockStatus = 'loaded';
+    console.timeEnd('loadHeader');
   }
 }
 
@@ -6999,6 +7000,8 @@ function setLanguage() {
  * @returns {Promise}
  */
 async function loadHeader(header) {
+  performance.mark("loadHeader");
+  console.time('loadHeader');
   const headerBlock = buildBlock('header', null);
   header.append(headerBlock);
   decorateBlock(headerBlock);
