@@ -1167,7 +1167,7 @@ export async function waitForLCP(lcpBlocks) {
   const hasLCPBlock = (block && lcpBlocks.includes(block.dataset.blockName));
   if (hasLCPBlock) await loadBlock(block);
 
-  document.body.style.display = null;
+  //document.body.style.display = null;
   const lcpCandidate = document.querySelector('main img');
   await new Promise((resolve) => {
     if (lcpCandidate && !lcpCandidate.complete) {
@@ -1303,7 +1303,7 @@ class PluginsRegistry {
       .map(async ([key, plugin]) => {
         try {
           // If the plugin has a default export, it will be executed immediately
-          const pluginApi = (await loadModule(
+          const pluginApi = (await loadModulePlugin(
             key,
             //!plugin.url.endsWith('.js') ? `${plugin.url}/${key}.js` : plugin.url,
             //!plugin.url.endsWith('.js') ? `${plugin.url}/${key}.css` : null,
