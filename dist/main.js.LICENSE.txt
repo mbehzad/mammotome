@@ -1,3 +1,0 @@
-//!plugin.url.endsWith('.js') ? `${plugin.url}/${key}.css` : null,
-
-//!plugin.url.endsWith('.js') ? `${plugin.url}/${key}.js` : plugin.url,
