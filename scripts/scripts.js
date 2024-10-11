@@ -301,14 +301,14 @@ export function addFavIcon(
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
-  await loadBlocks(main);
+  /*await */loadBlocks(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
-  await loadHeader(doc.querySelector('header'));
-  await loadFooter(doc.querySelector('footer'));
+  /*await */loadHeader(doc.querySelector('header'));
+  /*await */loadFooter(doc.querySelector('footer'));
 
   // is empty anyways
   // loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`, null);
