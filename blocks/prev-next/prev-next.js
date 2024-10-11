@@ -21,7 +21,7 @@ export default async function decorate(block) {
   const buildNavButtons = async (key, defaultText) => {
     const newDiv = document.createElement('div');
     newDiv.classList.add('prev-next-button');
-    newDiv.innerText = await translate(key, defaultText);
+    newDiv.textContent = await translate(key, defaultText);
     return newDiv;
   };
 

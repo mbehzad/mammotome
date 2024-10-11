@@ -18,7 +18,7 @@ function getFileDesription(file) {
   const description = document.createElement('div');
   description.className = 'field-description file-description';
   const span = document.createElement('span');
-  span.innerText = `${file.name} ${(file.size / (1024 * 1024)).toFixed(2)}mb`;
+  span.textContent = `${file.name} ${(file.size / (1024 * 1024)).toFixed(2)}mb`;
   description.append(span);
   return description;
 }
@@ -31,7 +31,7 @@ function updateIndex(elements = []) {
 
 function updateMessage(messages, message) {
   const li = document.createElement('li');
-  li.innerText = message;
+  li.textContent = message;
   messages.append(li);
 }
 
@@ -124,7 +124,7 @@ export default async function decorate(element) {
     };
     const button = document.createElement('button');
     button.type = 'button';
-    button.innerText = 'Select files';
+    button.textContent = 'Select files';
     button.onclick = () => {
       const fileInput = template.cloneNode(true);
       fileInput.onchange = () => attachFiles([...fileInput.files]);

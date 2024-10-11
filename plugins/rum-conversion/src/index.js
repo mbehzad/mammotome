@@ -76,7 +76,7 @@ function findConversionValue(parent, fieldName) {
   }
   // Find the element by the inner text of the label
   return Array.from(parent.getElementsByTagName('label'))
-    .filter((l) => l.innerText.trim().toLowerCase() === fieldName.toLowerCase())
+    .filter((l) => l.textContent.trim().toLowerCase() === fieldName.toLowerCase())
     .map((label) => document.getElementById(label.htmlFor))
     .filter((field) => !!field)
     .map((field) => field.value)

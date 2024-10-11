@@ -10,11 +10,11 @@ export default function decorate(block) {
     const answerBlock = document.createElement('p');
     answerBlock.innerHTML = answerArea.innerHTML;
 
-    answerArea.innerText = '';
+    answerArea.textContent = '';
     answerArea.appendChild(answerBlock);
 
     question.innerHTML = `<span>${questionArea.innerHTML}</span>`;
-    questionArea.innerText = '';
+    questionArea.textContent = '';
     questionArea.appendChild(question);
 
     answerArea.classList.add('collapsed');
