@@ -260,7 +260,8 @@ async function loadEager(doc) {
   if (main) {
     await window.hlx.plugins.run('loadEager');
     await decorateMain(main);
-    await waitForLCP(LCP_BLOCKS);
+    // await waitForLCP(LCP_BLOCKS);
+    document.body.classList.add('loaded');
 
     try {
       /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */
@@ -310,7 +311,7 @@ async function loadLazy(doc) {
   await loadFooter(doc.querySelector('footer'));
 
   // is empty anyways
-  //loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`, null);
+  // loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`, null);
   loadFonts();
 
   addFavIcon(`${window.hlx.codeBasePath}/styles/icons/favicon-32x32.png`);
