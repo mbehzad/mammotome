@@ -9,9 +9,9 @@ const INVALID_CONFIGURATION_MESSAGE = `Invalid configuration. Table with ${NUM_C
  * Get optimized img element width default
  * @param picture
  */
-export function optimizeThumbnails(picture) {
+export function optimizeThumbnails(block) {
   createOptimizedPicture(
-    picture,
+    block.querySelector("picture"),
     true,
   )
 }

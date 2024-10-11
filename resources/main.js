@@ -1687,9 +1687,9 @@ const INVALID_CONFIGURATION_MESSAGE = `Invalid configuration. Table with ${NUM_C
  * Get optimized img element width default
  * @param picture
  */
-function optimizeThumbnails(picture) {
+function optimizeThumbnails(block) {
   (0,_scripts_lib_franklin_js__WEBPACK_IMPORTED_MODULE_1__.createOptimizedPicture)(
-    picture,
+    block.querySelector("picture"),
     true,
   )
 }

@@ -1188,6 +1188,11 @@ body:not(.loaded) main > div:not(:has(.hero-carousel)) {
 body:not(.loaded) main .hero-carousel div:has(picture) ~ div {
   display: none;
 }
+
+main {
+  min-height: 100vh;
+}
+
 /*!**************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./styles/lazy-styles.css ***!
   \**************************************************************************/
