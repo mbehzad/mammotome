@@ -800,8 +800,9 @@ export function decorateSections(main) {
     section.dataset.sectionStatus = 'initialized';
     section.style.display = 'none';
     performance.mark('decorateSections');
-    createOptimizedPicture(section
-      .querySelectorAll('picture'));
+    section
+      .querySelectorAll('picture').forEach(pic => createOptimizedPicture(pic))
+
 
 
     /* process section metadata */
