@@ -714,6 +714,7 @@ export {
  * @param height default image height
  */
 export function createOptimizedPicture(src, alt = '', eager = false, width = null, height = null, breakpoints = [{ media: '(min-width: 750px)', width: '2000' }, { media: '(min-width: 450px)', width: '750' }, { width: '450' }]) {
+  console.time('createOptimizedPicture');
   const url = new URL(src, window.location.href);
   const picture = document.createElement('picture');
   const { pathname } = url;
@@ -747,6 +748,8 @@ export function createOptimizedPicture(src, alt = '', eager = false, width = nul
       }
     }
   });
+
+  console.timeEnd('createOptimizedPicture');
 
   return picture;
 }
