@@ -10,22 +10,10 @@ const INVALID_CONFIGURATION_MESSAGE = `Invalid configuration. Table with ${NUM_C
  * @param picture
  */
 export function optimizeThumbnails(picture) {
-  picture
-    .querySelectorAll('img')
-    .forEach((img) => {
-      const imgHeight = Math.floor((img.height * 1024) / img.width);
-      img
-        .closest('picture')
-        .replaceWith(
-          createOptimizedPicture(
-            img.src,
-            'Slider Image',
-            true,
-            img.width,
-            imgHeight,
-          ),
-        );
-    });
+  createOptimizedPicture(
+    picture,
+    true,
+  )
 }
 
 /**

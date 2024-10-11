@@ -706,18 +706,18 @@ export {
 
 /**
  * Returns a picture element with webp and fallbacks
- * @param {string} src The image URL
- * @param alt
+ * @param {HTMLPictureElement|null} picture The image URL
  * @param {boolean} eager load image eager
  * @param {Array} breakpoints breakpoints and corresponding params (eg. width)
- * @param width default image width
- * @param height default image height
  */
-export function createOptimizedPicture(src, alt = '', eager = false, width = null, height = null, breakpoints = [{ media: '(min-width: 750px)', width: '2000' }, { media: '(min-width: 450px)', width: '750' }, { width: '450' }]) {
+export function createOptimizedPicture(picture, eager = false, breakpoints = [{ media: '(min-width: 750px)', width: '2000' }, { media: '(min-width: 450px)', width: '750' }, { width: '450' }]) {
   console.time('createOptimizedPicture');
   performance.mark('createOptimizedPicture');
-  const url = new URL(src, window.location.href);
-  const picture = document.createElement('picture');
+  if (!picture) return;
+
+  const img = picture.querySelector('img');
+  picture.querySelectorAll('source').forEach((source) => source.remove());
+  const url = new URL(img.src, window.location.href);
   const { pathname } = url;
   const ext = pathname.substring(pathname.lastIndexOf('.') + 1);
 
@@ -738,15 +738,8 @@ export function createOptimizedPicture(src, alt = '', eager = false, width = nul
       source.setAttribute('srcset', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
       picture.appendChild(source);
     } else {
-      const img = document.createElement('img');
       img.setAttribute('loading', eager ? 'eager' : 'lazy');
-      img.setAttribute('alt', alt);
-      picture.appendChild(img);
       img.setAttribute('src', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
-      if (width && height) {
-        img.setAttribute('width', width);
-        img.setAttribute('height', height);
-      }
     }
   });
 
@@ -805,12 +798,9 @@ export function decorateSections(main) {
     section.dataset.sectionStatus = 'initialized';
     section.style.display = 'none';
     performance.mark('decorateSections');
-    section
-      .querySelectorAll('img')
-      .forEach((img) => img.closest('picture')
-        .replaceWith(
-          createOptimizedPicture(img.src, img.alt, false, img.width, img.height),
-        ));
+    createOptimizedPicture(section
+      .querySelectorAll('picture'));
+
 
     /* process section metadata */
     const sectionMeta = section.querySelector('div.section-metadata');
@@ -928,9 +918,9 @@ export function buildBlock(blockName, content) {
  * @param {object[]} [args] Parameters to be passed to the default export when it is called
  */
 async function loadModulePlugin(name, ...args) {
-  /*const cssLoaded = cssPath
+  /* const cssLoaded = cssPath
     ? new Promise((resolve) => { loadCSS(cssPath, resolve); })
-    : Promise.resolve();*/
+    : Promise.resolve(); */
   const decorationComplete = true
     ? new Promise((resolve) => {
       (async () => {
@@ -948,7 +938,7 @@ async function loadModulePlugin(name, ...args) {
       })();
     })
     : Promise.resolve();
-  return Promise.all([/*cssLoaded,*/ decorationComplete])
+  return Promise.all([decorationComplete])
     .then(([, api]) => api);
 }
 
@@ -960,9 +950,9 @@ async function loadModulePlugin(name, ...args) {
  * @param {object[]} [args] Parameters to be passed to the default export when it is called
  */
 async function loadModuleBlock(name, ...args) {
-  /*const cssLoaded = cssPath
+  /* const cssLoaded = cssPath
     ? new Promise((resolve) => { loadCSS(cssPath, resolve); })
-    : Promise.resolve();*/
+    : Promise.resolve(); */
   const decorationComplete = true
     ? new Promise((resolve) => {
       (async () => {
@@ -980,7 +970,7 @@ async function loadModuleBlock(name, ...args) {
       })();
     })
     : Promise.resolve();
-  return Promise.all([/*cssLoaded, */decorationComplete])
+  return Promise.all([/* cssLoaded, */decorationComplete])
     .then(([, api]) => api);
 }
 
@@ -1029,8 +1019,7 @@ export async function loadBlocks(main) {
   const blocks = [...main.querySelectorAll('div.block')];
   for (let i = 0; i < blocks.length; i += 1) {
     // eslint-disable-next-line no-await-in-loop
-    /*await */loadBlock(blocks[i]).then(() => updateSectionsStatus(main));
-
+    /* await */loadBlock(blocks[i]).then(() => updateSectionsStatus(main));
   }
 }
 
@@ -1148,6 +1137,7 @@ export function decorateButtons(element) {
 }
 
 export function decorateBlockImgs(block) {
+  return;
   block.querySelectorAll('img')
     .forEach((img) => {
       const { hostname } = new URL(img.src, window.location.href);
@@ -1172,7 +1162,7 @@ export async function waitForLCP(lcpBlocks) {
   const hasLCPBlock = (block && lcpBlocks.includes(block.dataset.blockName));
   if (hasLCPBlock) await loadBlock(block);
 
-  //document.body.style.display = null;
+  // document.body.style.display = null;
   const lcpCandidate = document.querySelector('main img');
   await new Promise((resolve) => {
     if (lcpCandidate && !lcpCandidate.complete) {
@@ -1310,8 +1300,8 @@ class PluginsRegistry {
           // If the plugin has a default export, it will be executed immediately
           const pluginApi = (await loadModulePlugin(
             key,
-            //!plugin.url.endsWith('.js') ? `${plugin.url}/${key}.js` : plugin.url,
-            //!plugin.url.endsWith('.js') ? `${plugin.url}/${key}.css` : null,
+            //! plugin.url.endsWith('.js') ? `${plugin.url}/${key}.js` : plugin.url,
+            //! plugin.url.endsWith('.js') ? `${plugin.url}/${key}.css` : null,
             document,
             plugin.options,
             executionContext,
@@ -1384,7 +1374,7 @@ export function setup() {
  * Auto initializiation.
  */
 function init() {
-  //document.body.style.display = 'none';
+  // document.body.style.display = 'none';
   setup();
   sampleRUM('top');
 

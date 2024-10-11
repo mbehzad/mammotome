@@ -115,22 +115,8 @@ const addClickHandler = (video, videoPath) => {
 };
 
 const optimizeThumbnails = (video) => {
-  video
-    .querySelectorAll('img')
-    .forEach((img) => {
-      img
-        .closest('picture')
-        ?.replaceWith(
-          createOptimizedPicture(
-            img.src,
-            img.alt,
-            false,
-            null,
-            null,
-            [{ width: '768' }],
-          ),
-        );
-    });
+  createOptimizedPicture(video.querySelector("picture"), false, [{ width: '768' }],);
+
 };
 
 const decorateVideo = async (video) => {

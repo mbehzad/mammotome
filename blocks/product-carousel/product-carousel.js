@@ -34,22 +34,7 @@ const HTML_RIGHT_ARROW = ARROW_TEMPLATE('M256 120.768L306.432 64 768 512l-461.56
  * @param picture
  */
 export function optimizeThumbnails(picture) {
-  picture
-    .querySelectorAll('img')
-    .forEach((img) => {
-      const imgHeight = Math.floor((img.height * 1024) / img.width);
-      img
-        .closest('picture')
-        .replaceWith(
-          createOptimizedPicture(
-            img.src,
-            'Slider Image',
-            true,
-            img.width,
-            imgHeight,
-          ),
-        );
-    });
+  createOptimizedPicture(picture,  true,)
 }
 
 /**
