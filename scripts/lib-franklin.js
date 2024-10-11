@@ -800,6 +800,7 @@ export function decorateSections(main) {
     section.classList.add('section');
     section.dataset.sectionStatus = 'initialized';
     section.style.display = 'none';
+    performance.mark('decorateSections');
     section
       .querySelectorAll('img')
       .forEach((img) => img.closest('picture')
