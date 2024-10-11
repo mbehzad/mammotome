@@ -1193,6 +1193,10 @@ main {
   min-height: 100vh;
 }
 
+main > div {
+  content-visibility: auto;
+  contain-intrinsic-size: 100vh;
+}
 /*!**************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./styles/lazy-styles.css ***!
   \**************************************************************************/

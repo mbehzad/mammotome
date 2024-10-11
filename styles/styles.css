@@ -1189,3 +1189,8 @@ body:not(.loaded) main .hero-carousel div:has(picture) ~ div {
 main {
   min-height: 100vh;
 }
+
+main > div {
+  content-visibility: auto;
+  contain-intrinsic-size: 100vh;
+}
