@@ -519,7 +519,7 @@ export function getInfo() {
 export function adjustAssetURL(asset) {
   if (asset?.URL) {
     const url = new URL(asset.URL, window.location);
-    const isLocalOrHlx = ['localhost', '-mammotome--hlxsites.hlx.page', '-mammotome--hlxsites.hlx.live', '-mammotome--hlxsites.aem.page', '-mammotome--hlxsites.aem.live']
+    const isLocalOrHlx = ['localhost', '-mammotome--mbehzad.hlx.page', '-mammotome--mbehzad.hlx.live', '-mammotome--mbehzad.aem.page', '-mammotome--mbehzad.aem.live']
       .some((domain) => url.hostname.endsWith(domain));
 
     if (isLocalOrHlx) {
@@ -1115,10 +1115,10 @@ export function decorateBlockImgs(block) {
     .forEach((img) => {
       const { hostname } = new URL(img.src, window.location.href);
       if (hostname === window.location.hostname
-        || hostname.endsWith('-mammotome--hlxsites.hlx.page')
-        || hostname.endsWith('-mammotome--hlxsites.hlx.live')
-        || hostname.endsWith('-mammotome--hlxsites.aem.page')
-        || hostname.endsWith('-mammotome--hlxsites.aem.live')
+        || hostname.endsWith('-mammotome--mbehzad.hlx.page')
+        || hostname.endsWith('-mammotome--mbehzad.hlx.live')
+        || hostname.endsWith('-mammotome--mbehzad.aem.page')
+        || hostname.endsWith('-mammotome--mbehzad.aem.live')
         || hostname === 'localhost') {
         img.replaceWith(
           createOptimizedPicture(img.src, img.alt, false, img.width, img.height),
