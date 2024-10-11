@@ -6495,6 +6495,8 @@ function createOptimizedPicture(picture, eager = false, breakpoints = [{ media: 
   performance.mark('createOptimizedPicture');
   if (!picture) return;
 
+  console.log('picture:', picture);
+
   const img = picture.querySelector('img');
   picture.querySelectorAll('source').forEach((source) => source.remove());
   const url = new URL(img.src, window.location.href);
