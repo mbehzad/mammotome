@@ -278,7 +278,7 @@ body {
   line-height: var(--mt-body-line-height);
   color: var(--mt-text-color);
   background-color: var(--mt-background-color-primary);
-  opacity: 0;
+  /*opacity: 0;*/
 }
 
 header {
