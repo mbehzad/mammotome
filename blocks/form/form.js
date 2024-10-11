@@ -392,7 +392,7 @@ function decorateFormFields(form) {
 async function decorateFormLayout(block, form) {
   if (block.classList.contains('wizard')) {
     try {
-      (await import('./wizard.js')).default(form);
+      (await import(/* webpackMode: "eager" */'./wizard.js')).default(form);
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(`Failed to load wizard ${err}`);

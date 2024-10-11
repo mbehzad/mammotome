@@ -382,7 +382,7 @@ export async function getConfig(experiment, instantExperiment, pluginOptions, co
     experimentConfig.selectedVariant = forcedVariant;
   } else {
     // eslint-disable-next-line import/extensions
-    const { ued } = await import('./ued.js');
+    const { ued } = await import(/* webpackMode: "eager" */'./ued.js');
     const decision = ued.evaluateDecisionPolicy(getDecisionPolicy(experimentConfig), {});
     experimentConfig.selectedVariant = decision.items[0].id;
   }
@@ -551,6 +551,7 @@ export async function serveAudience(document, options, context) {
   }
 }
 
+/*
 window.hlx.patchBlockConfig.push((config) => {
   const { experiment } = window.hlx;
 
@@ -611,6 +612,7 @@ window.hlx.patchBlockConfig.push((config) => {
     jsPath: `${origin}${codeBasePath}${path}/${config.blockName}.js`,
   };
 });
+*/
 
 let isAdjusted = false;
 function adjustedRumSamplingRate(checkpoint, options, context) {
@@ -656,7 +658,7 @@ export async function loadLazy(document, options, context) {
     || window.location.hostname === ('localhost')
     || (typeof options.isProd === 'function' && !options.isProd())) {
     // eslint-disable-next-line import/no-cycle
-    const preview = await import('./preview.js');
+    const preview = await import(/* webpackMode: "eager" */'./preview.js');
     preview.default(document, pluginOptions, { ...context, getResolvedAudiences });
   }
 }
