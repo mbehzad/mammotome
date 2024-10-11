@@ -6509,7 +6509,8 @@ function createOptimizedPicture(picture, eager = false, breakpoints = [{ media: 
     if (br.media) source.setAttribute('media', br.media);
     source.setAttribute('type', 'image/webp');
     source.setAttribute('srcset', `${pathname}?width=${br.width}&format=webply&optimize=medium`);
-    picture.appendChild(source);
+
+    img.insertAdjacentElement("afterend", source);
   });
 
   // fallback
@@ -6518,7 +6519,7 @@ function createOptimizedPicture(picture, eager = false, breakpoints = [{ media: 
       const source = document.createElement('source');
       if (br.media) source.setAttribute('media', br.media);
       source.setAttribute('srcset', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
-      picture.appendChild(source);
+      img.insertAdjacentElement("afterend", source);
     } else {
       img.setAttribute('loading', eager ? 'eager' : 'lazy');
       img.setAttribute('src', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
