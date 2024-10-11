@@ -3,5 +3,5 @@ Please always provide the [GitHub issue(s)](../issues) your PR is for, as well a
 Fix #<gh-issue-id>
 
 Test URLs:
-- Before: https://main--mammotome--hlxsites.aem.page/us/en/
-- After: https://<branch>--mammotome--hlxsites.aem.page/us/en/
+- Before: https://main--mammotome--mbehzad.aem.page/us/en/
+- After: https://<branch>--mammotome--mbehzad.aem.page/us/en/
