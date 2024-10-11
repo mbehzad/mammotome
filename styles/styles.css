@@ -278,6 +278,7 @@ body {
   line-height: var(--mt-body-line-height);
   color: var(--mt-text-color);
   background-color: var(--mt-background-color-primary);
+  opacity: 0;
 }
 
 header {
@@ -1171,4 +1172,16 @@ main .section.our-history .year.highlight .icon-calendar {
 
 .section.nopadding {
   padding: 0;
+}
+
+body.loaded {
+  opacity: 1;
+}
+
+body:not(.loaded) main > div:not(:has(.hero-carousel)) {
+  display: none;
+}
+
+body:not(.loaded) main .hero-carousel div:has(picture) ~ div {
+  display: none;
 }
