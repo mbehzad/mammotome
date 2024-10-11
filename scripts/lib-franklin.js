@@ -730,7 +730,7 @@ export function createOptimizedPicture(picture, eager = false, breakpoints = [{ 
     source.setAttribute('type', 'image/webp');
     source.setAttribute('srcset', `${pathname}?width=${br.width}&format=webply&optimize=medium`);
 
-    img.insertAdjacentElement("afterend", source);
+    img.insertAdjacentElement("beforebegin", source);
   });
 
   // fallback
@@ -739,7 +739,7 @@ export function createOptimizedPicture(picture, eager = false, breakpoints = [{ 
       const source = document.createElement('source');
       if (br.media) source.setAttribute('media', br.media);
       source.setAttribute('srcset', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
-      img.insertAdjacentElement("afterend", source);
+      img.insertAdjacentElement("beforebegin", source);
     } else {
       img.setAttribute('loading', eager ? 'eager' : 'lazy');
       img.setAttribute('src', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
