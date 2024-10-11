@@ -1,23 +1,23 @@
 @font-face {
   font-family: roboto;
-  src: /* webpackIgnore: true */ url('/fonts/roboto1.woff2') format("woff2");
+  src: /* webpackIgnore: true */ url('/fonts2/roboto1.woff2') format("woff2");
   font-display:swap;font-style:normal;font-weight:700;font-stretch:normal;
 }
 
 @font-face {
   font-family: roboto;
-  src: /* webpackIgnore: true */ url('/fonts/roboto2.woff2') format("woff2");
+  src: /* webpackIgnore: true */ url('/fonts2/roboto2.woff2') format("woff2");
   font-display:swap;font-style:normal;font-weight:400;font-stretch:normal;
 }
 
 @font-face {
   font-family: roboto;
-  src: /* webpackIgnore: true */ url('/fonts/roboto3.woff2') format("woff2");
+  src: /* webpackIgnore: true */ url('/fonts2/roboto3.woff2') format("woff2");
   font-display:swap;font-style:normal;font-weight:300;font-stretch:normal;
 }
 
 @font-face {
   font-family: roboto;
-  src: /* webpackIgnore: true */ url('/fonts/roboto4.woff2') format("woff2");
+  src: /* webpackIgnore: true */ url('/fonts2/roboto4.woff2') format("woff2");
   font-display:swap;font-style:normal;font-weight:500;font-stretch:normal;
 }
