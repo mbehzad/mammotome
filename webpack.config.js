@@ -17,7 +17,7 @@ module.exports = {
     },
   },
   output: {
-    path: path.resolve(__dirname, 'resources2'),
+    path: path.resolve(__dirname, 'resources'),
   },
   module: {
     rules: [
