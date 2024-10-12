@@ -5,6 +5,7 @@
   "description": "Starter project for Adobe Helix",
   "scripts": {
     "build": "webpack",
+    "watch": "webpack --watch",
     "test": "wtr \"./test/**/*.test.js\" --node-resolve --port=2000 --coverage",
     "test:watch": "npm test -- --watch",
     "lint:js": "eslint .",
