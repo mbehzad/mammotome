@@ -276,7 +276,8 @@ export async function decorateIcons(element) {
   }));
 
   const symbols = Object.values(ICONS_CACHE).filter((v) => !v.styled).map((v) => v.html).join('\n');
-  svgSprite.innerHTML += symbols;
+  //svgSprite.innerHTML += symbols;
+  svgSprite.insertAdjacentHTML("beforeend", symbols);
 
   icons.forEach((span) => {
     const iconName = Array.from(span.classList).find((c) => c.startsWith('icon-')).substring(5);
