@@ -382,10 +382,12 @@ function decorateLanguageNav(navSections) {
  * @param {Element} block The header block element
  */
 export default async function decorate(block) {
+  console.time("header decorate")
   // fetch nav content
   const navPath = getMetadata('nav') || '/nav';
+  console.time("header fetch")
   const resp = await fetch(`${navPath}.plain.html`);
-
+  console.timeEnd("header fetch")
   if (resp.ok) {
     const html = await resp.text();
 
@@ -518,4 +520,6 @@ export default async function decorate(block) {
     navWrapper.append(nav);
     block.append(navWrapper);
   }
+
+  console.timeEnd("header decorate")
 }

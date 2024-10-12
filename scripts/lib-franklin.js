@@ -999,6 +999,7 @@ function getBlockConfig(block) {
  * @param {Element} block The block element
  */
 export async function loadBlock(block) {
+  console.time('loadBlock');
   const status = block.dataset.blockStatus;
   if (status !== 'loading' && status !== 'loaded') {
     block.dataset.blockStatus = 'loading';
@@ -1011,6 +1012,7 @@ export async function loadBlock(block) {
     }
     block.dataset.blockStatus = 'loaded';
   }
+  console.timeEnd('loadBlock');
 }
 
 /**
