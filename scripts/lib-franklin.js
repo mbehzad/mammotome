@@ -716,8 +716,6 @@ export function createOptimizedPicture(picture, eager = false, breakpoints = [{ 
   performance.mark('createOptimizedPicture');
   if (!picture) return;
 
-  console.log('picture:', picture);
-
   const img = picture.querySelector('img');
   picture.querySelectorAll('source').forEach((source) => source.remove());
   const url = new URL(img.src, window.location.href);
@@ -1222,10 +1220,18 @@ export function setLanguage() {
 export async function loadHeader(header) {
   performance.mark("loadHeader");
   console.time('loadHeader');
+  console.time('loadHeader-buildBlock');
   const headerBlock = buildBlock('header', null);
+  console.timeEnd('loadHeader-buildBlock');
+  console.time('loadHeader-append');
   header.append(headerBlock);
+  console.timeEnd('loadHeader-append');
+  console.time('loadHeader-decorateBlock');
   decorateBlock(headerBlock);
+  console.timeEnd('loadHeader-decorateBlock');
+  console.time('loadHeader-loadBlock');
   await loadBlock(headerBlock);
+  console.timeEnd('loadHeader-loadBlock');
   console.timeEnd('loadHeader');
 
 }
