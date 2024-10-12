@@ -244,7 +244,7 @@ export async function decorateIcons(element) {
 
   // Download all new icons
   const icons = [...element.querySelectorAll('span.icon')];
-  console.log('icons', icons);
+  console.logEnd('icons', icons);
 
   await Promise.all(icons.map(async (span) => {
     const iconName = Array.from(span.classList).find((c) => c.startsWith('icon-')).substring(5);
