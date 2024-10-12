@@ -248,6 +248,7 @@ export async function decorateIcons(element) {
 
   await Promise.all(icons.map(async (span) => {
     const iconName = Array.from(span.classList).find((c) => c.startsWith('icon-')).substring(5);
+    console.time("icon-" + iconName);
     if (!ICONS_CACHE[iconName]) {
       ICONS_CACHE[iconName] = true;
       try {
@@ -275,6 +276,7 @@ export async function decorateIcons(element) {
         console.error(error);
       }
     }
+    console.time("icon-" + iconName);
   }));
 
   const symbols = Object.values(ICONS_CACHE).filter((v) => !v.styled).map((v) => v.html).join('\n');
