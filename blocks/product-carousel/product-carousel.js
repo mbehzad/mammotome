@@ -34,7 +34,7 @@ const HTML_RIGHT_ARROW = ARROW_TEMPLATE('M256 120.768L306.432 64 768 512l-461.56
  * @param picture
  */
 export function optimizeThumbnails(picture) {
-  createOptimizedPicture(picture,  true,)
+  createOptimizedPicture(picture, false,)
 }
 
 /**
