@@ -244,7 +244,7 @@ export async function decorateIcons(element) {
 
   // Download all new icons
   const icons = [...element.querySelectorAll('span.icon')];
-  console.logEnd('icons', icons);
+  console.log('icons', icons);
 
   await Promise.all(icons.map(async (span) => {
     const iconName = Array.from(span.classList).find((c) => c.startsWith('icon-')).substring(5);
@@ -276,7 +276,7 @@ export async function decorateIcons(element) {
         console.error(error);
       }
     }
-    console.time("icon-" + iconName);
+    console.timeEnd("icon-" + iconName);
   }));
 
   const symbols = Object.values(ICONS_CACHE).filter((v) => !v.styled).map((v) => v.html).join('\n');
