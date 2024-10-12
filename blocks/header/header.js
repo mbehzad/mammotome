@@ -502,7 +502,7 @@ export default async function decorate(block) {
       });
     });
 
-    await decorateIcons(nav);
+    /*await */decorateIcons(nav);
     await decorateSearch(nav);
     decorateSupScriptInTextBelow(nav);
     // add logo for scrolling page
