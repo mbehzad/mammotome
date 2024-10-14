@@ -67,7 +67,7 @@ export default function decorate(block) {
 
   const processImg = (img) => {
     const picture = img.closest('picture');
-    picture.replaceWith(createOptimizedPicture(img.src, img.alt, false, null, null, [{ width: '600' }]));
+    createOptimizedPicture(picture,  false,   [{ width: '600' }]);
   };
 
   ul.querySelectorAll('img').forEach(processImg);

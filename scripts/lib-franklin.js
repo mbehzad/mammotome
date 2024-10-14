@@ -244,8 +244,11 @@ export async function decorateIcons(element) {
 
   // Download all new icons
   const icons = [...element.querySelectorAll('span.icon')];
+  console.log('icons', icons);
+
   await Promise.all(icons.map(async (span) => {
     const iconName = Array.from(span.classList).find((c) => c.startsWith('icon-')).substring(5);
+    console.time("icon-" + iconName);
     if (!ICONS_CACHE[iconName]) {
       ICONS_CACHE[iconName] = true;
       try {
@@ -273,10 +276,12 @@ export async function decorateIcons(element) {
         console.error(error);
       }
     }
+    console.timeEnd("icon-" + iconName);
   }));
 
   const symbols = Object.values(ICONS_CACHE).filter((v) => !v.styled).map((v) => v.html).join('\n');
-  svgSprite.innerHTML += symbols;
+  //svgSprite.innerHTML += symbols;
+  svgSprite.insertAdjacentHTML("beforeend", symbols);
 
   icons.forEach((span) => {
     const iconName = Array.from(span.classList).find((c) => c.startsWith('icon-')).substring(5);
@@ -706,16 +711,18 @@ export {
 
 /**
  * Returns a picture element with webp and fallbacks
- * @param {string} src The image URL
- * @param alt
+ * @param {HTMLPictureElement|null} picture The image URL
  * @param {boolean} eager load image eager
  * @param {Array} breakpoints breakpoints and corresponding params (eg. width)
- * @param width default image width
- * @param height default image height
  */
-export function createOptimizedPicture(src, alt = '', eager = false, width = null, height = null, breakpoints = [{ media: '(min-width: 750px)', width: '2000' }, { media: '(min-width: 450px)', width: '750' }, { width: '450' }]) {
-  const url = new URL(src, window.location.href);
-  const picture = document.createElement('picture');
+export function createOptimizedPicture(picture, eager = false, breakpoints = [{ media: '(min-width: 750px)', width: '2000' }, { media: '(min-width: 450px)', width: '750' }, { width: '450' }]) {
+  console.time('createOptimizedPicture');
+  performance.mark('createOptimizedPicture');
+  if (!picture) return;
+
+  const img = picture.querySelector('img');
+  picture.querySelectorAll('source').forEach((source) => source.remove());
+  const url = new URL(img.src, window.location.href);
   const { pathname } = url;
   const ext = pathname.substring(pathname.lastIndexOf('.') + 1);
 
@@ -725,7 +732,8 @@ export function createOptimizedPicture(src, alt = '', eager = false, width = nul
     if (br.media) source.setAttribute('media', br.media);
     source.setAttribute('type', 'image/webp');
     source.setAttribute('srcset', `${pathname}?width=${br.width}&format=webply&optimize=medium`);
-    picture.appendChild(source);
+
+    img.insertAdjacentElement("beforebegin", source);
   });
 
   // fallback
@@ -734,19 +742,14 @@ export function createOptimizedPicture(src, alt = '', eager = false, width = nul
       const source = document.createElement('source');
       if (br.media) source.setAttribute('media', br.media);
       source.setAttribute('srcset', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
-      picture.appendChild(source);
+      img.insertAdjacentElement("beforebegin", source);
     } else {
-      const img = document.createElement('img');
       img.setAttribute('loading', eager ? 'eager' : 'lazy');
-      img.setAttribute('alt', alt);
-      picture.appendChild(img);
       img.setAttribute('src', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
-      if (width && height) {
-        img.setAttribute('width', width);
-        img.setAttribute('height', height);
-      }
     }
   });
+
+  console.timeEnd('createOptimizedPicture');
 
   return picture;
 }
@@ -800,12 +803,11 @@ export function decorateSections(main) {
     section.classList.add('section');
     section.dataset.sectionStatus = 'initialized';
     section.style.display = 'none';
+    performance.mark('decorateSections');
     section
-      .querySelectorAll('img')
-      .forEach((img) => img.closest('picture')
-        .replaceWith(
-          createOptimizedPicture(img.src, img.alt, false, img.width, img.height),
-        ));
+      .querySelectorAll('picture').forEach(pic => createOptimizedPicture(pic))
+
+
 
     /* process section metadata */
     const sectionMeta = section.querySelector('div.section-metadata');
@@ -922,16 +924,16 @@ export function buildBlock(blockName, content) {
  * @param {string} [cssPath] An optional CSS file to load
  * @param {object[]} [args] Parameters to be passed to the default export when it is called
  */
-async function loadModule(name, jsPath, cssPath, ...args) {
-  const cssLoaded = cssPath
+async function loadModulePlugin(name, ...args) {
+  /* const cssLoaded = cssPath
     ? new Promise((resolve) => { loadCSS(cssPath, resolve); })
-    : Promise.resolve();
-  const decorationComplete = jsPath
+    : Promise.resolve(); */
+  const decorationComplete = true
     ? new Promise((resolve) => {
       (async () => {
         let mod;
         try {
-          mod = await import(jsPath);
+          mod = await import(/* webpackMode: "eager" */`../plugins/${name}/src/index.js`);
           if (mod.default) {
             await mod.default.apply(null, args);
           }
@@ -943,7 +945,39 @@ async function loadModule(name, jsPath, cssPath, ...args) {
       })();
     })
     : Promise.resolve();
-  return Promise.all([cssLoaded, decorationComplete])
+  return Promise.all([decorationComplete])
+    .then(([, api]) => api);
+}
+
+/**
+ * Loads JS and CSS for a module and executes it's default export.
+ * @param {string} name The module name
+ * @param {string} jsPath The JS file to load
+ * @param {string} [cssPath] An optional CSS file to load
+ * @param {object[]} [args] Parameters to be passed to the default export when it is called
+ */
+async function loadModuleBlock(name, ...args) {
+  /* const cssLoaded = cssPath
+    ? new Promise((resolve) => { loadCSS(cssPath, resolve); })
+    : Promise.resolve(); */
+  const decorationComplete = true
+    ? new Promise((resolve) => {
+      (async () => {
+        let mod;
+        try {
+          mod = await import(/* webpackMode: "eager" */`../blocks/${name}/${name}.js`);
+          if (mod.default) {
+            await mod.default.apply(null, args);
+          }
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.log(`failed to load module for ${name}`, error);
+        }
+        resolve(mod);
+      })();
+    })
+    : Promise.resolve();
+  return Promise.all([/* cssLoaded, */decorationComplete])
     .then(([, api]) => api);
 }
 
@@ -969,18 +1003,20 @@ function getBlockConfig(block) {
  * @param {Element} block The block element
  */
 export async function loadBlock(block) {
+  console.time('loadBlock');
   const status = block.dataset.blockStatus;
   if (status !== 'loading' && status !== 'loaded') {
     block.dataset.blockStatus = 'loading';
     const { blockName, cssPath, jsPath } = getBlockConfig(block);
     try {
-      await loadModule(blockName, jsPath, cssPath, block);
+      await loadModuleBlock(blockName, block);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(`failed to load block ${blockName}`, error);
     }
     block.dataset.blockStatus = 'loaded';
   }
+  console.timeEnd('loadBlock');
 }
 
 /**
@@ -992,8 +1028,7 @@ export async function loadBlocks(main) {
   const blocks = [...main.querySelectorAll('div.block')];
   for (let i = 0; i < blocks.length; i += 1) {
     // eslint-disable-next-line no-await-in-loop
-    await loadBlock(blocks[i]);
-    updateSectionsStatus(main);
+    /* await */loadBlock(blocks[i]).then(() => updateSectionsStatus(main));
   }
 }
 
@@ -1111,6 +1146,7 @@ export function decorateButtons(element) {
 }
 
 export function decorateBlockImgs(block) {
+  return;
   block.querySelectorAll('img')
     .forEach((img) => {
       const { hostname } = new URL(img.src, window.location.href);
@@ -1135,7 +1171,7 @@ export async function waitForLCP(lcpBlocks) {
   const hasLCPBlock = (block && lcpBlocks.includes(block.dataset.blockName));
   if (hasLCPBlock) await loadBlock(block);
 
-  document.body.style.display = null;
+  // document.body.style.display = null;
   const lcpCandidate = document.querySelector('main img');
   await new Promise((resolve) => {
     if (lcpCandidate && !lcpCandidate.complete) {
@@ -1188,10 +1224,22 @@ export function setLanguage() {
  * @returns {Promise}
  */
 export async function loadHeader(header) {
+  performance.mark("loadHeader");
+  console.time('loadHeader');
+  console.time('loadHeader-buildBlock');
   const headerBlock = buildBlock('header', null);
+  console.timeEnd('loadHeader-buildBlock');
+  console.time('loadHeader-append');
   header.append(headerBlock);
+  console.timeEnd('loadHeader-append');
+  console.time('loadHeader-decorateBlock');
   decorateBlock(headerBlock);
-  return loadBlock(headerBlock);
+  console.timeEnd('loadHeader-decorateBlock');
+  console.time('loadHeader-loadBlock');
+  await loadBlock(headerBlock);
+  console.timeEnd('loadHeader-loadBlock');
+  console.timeEnd('loadHeader');
+
 }
 
 /**
@@ -1271,10 +1319,10 @@ class PluginsRegistry {
       .map(async ([key, plugin]) => {
         try {
           // If the plugin has a default export, it will be executed immediately
-          const pluginApi = (await loadModule(
+          const pluginApi = (await loadModulePlugin(
             key,
-            !plugin.url.endsWith('.js') ? `${plugin.url}/${key}.js` : plugin.url,
-            !plugin.url.endsWith('.js') ? `${plugin.url}/${key}.css` : null,
+            //! plugin.url.endsWith('.js') ? `${plugin.url}/${key}.js` : plugin.url,
+            //! plugin.url.endsWith('.js') ? `${plugin.url}/${key}.css` : null,
             document,
             plugin.options,
             executionContext,
@@ -1347,7 +1395,7 @@ export function setup() {
  * Auto initializiation.
  */
 function init() {
-  document.body.style.display = 'none';
+  // document.body.style.display = 'none';
   setup();
   sampleRUM('top');
 

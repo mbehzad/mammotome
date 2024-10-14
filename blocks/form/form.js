@@ -174,7 +174,7 @@ function createHelpText(fd) {
   const div = document.createElement('div');
   div.className = 'field-description';
   div.setAttribute('aria-live', 'polite');
-  div.innerText = fd.Description;
+  div.textContent = fd.Description;
   div.id = `${fd.Id}-description`;
   return div;
 }
@@ -291,7 +291,7 @@ const createOutput = withFieldWrapper((fd) => {
   const output = document.createElement('output');
   output.name = fd.Name;
   output.dataset.fieldset = fd.Fieldset ? fd.Fieldset : '';
-  output.innerText = fd.Value;
+  output.textContent = fd.Value;
   return output;
 });
 
@@ -392,7 +392,7 @@ function decorateFormFields(form) {
 async function decorateFormLayout(block, form) {
   if (block.classList.contains('wizard')) {
     try {
-      (await import('./wizard.js')).default(form);
+      (await import(/* webpackMode: "eager" */'./wizard.js')).default(form);
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(`Failed to load wizard ${err}`);

@@ -278,6 +278,7 @@ body {
   line-height: var(--mt-body-line-height);
   color: var(--mt-text-color);
   background-color: var(--mt-background-color-primary);
+  opacity: 0;
 }
 
 header {
@@ -1107,7 +1108,7 @@ main .section.our-history .year.highlight .icon-calendar {
 }
 
 .section.logo-secondary-background {
-  background-image: url('/styles/icons/Mammotome-BG_Pattern-2.svg');
+  background-image: /* webpackIgnore: true */ url('/styles/icons/Mammotome-BG_Pattern-2.svg');
   background-position: center center;
   background-repeat: repeat;
   background-size: 60px auto;
@@ -1119,7 +1120,7 @@ main .section.our-history .year.highlight .icon-calendar {
 
 .section.logo-primary-background {
   background-color: var(--mt-global-color-base-primary);
-  background-image: url('/styles/icons/Mammotome-BG_Pattern-1.svg');
+  background-image: /* webpackIgnore: true */ url('/styles/icons/Mammotome-BG_Pattern-1.svg');
   background-position: center center;
   background-repeat: repeat;
   background-size: 60px auto;
@@ -1171,4 +1172,25 @@ main .section.our-history .year.highlight .icon-calendar {
 
 .section.nopadding {
   padding: 0;
+}
+
+body.loaded {
+  opacity: 1;
+}
+
+body:not(.loaded) main > div:not(:has(.hero-carousel)) {
+  display: none;
+}
+
+body:not(.loaded) main .hero-carousel div:has(picture) ~ div {
+  display: none;
+}
+
+main {
+  min-height: 100vh;
+}
+
+main > div {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 100vh;
 }

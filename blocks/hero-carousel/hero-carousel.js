@@ -9,23 +9,11 @@ const INVALID_CONFIGURATION_MESSAGE = `Invalid configuration. Table with ${NUM_C
  * Get optimized img element width default
  * @param picture
  */
-export function optimizeThumbnails(picture) {
-  picture
-    .querySelectorAll('img')
-    .forEach((img) => {
-      const imgHeight = Math.floor((img.height * 1024) / img.width);
-      img
-        .closest('picture')
-        .replaceWith(
-          createOptimizedPicture(
-            img.src,
-            'Slider Image',
-            true,
-            img.width,
-            imgHeight,
-          ),
-        );
-    });
+export function optimizeThumbnails(block) {
+  createOptimizedPicture(
+    block.querySelector("picture"),
+    true,
+  )
 }
 
 /**
@@ -68,7 +56,7 @@ function getConfig(block) {
   }
 
   return Array.from(block.children).map((slide) => {
-    const alignValue = slide.children[1].innerText.replace(/[\n\s]/g, '');
+    const alignValue = slide.children[1].textContent.replace(/[\n\s]/g, '');
     const align = checkAlign(alignValue) ? alignValue : 'left';
     const imgAlign = align === 'center' || align === 'right' ? 'left' : 'right';
     slide.children[1].remove();

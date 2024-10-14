@@ -6,22 +6,11 @@ import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
  * @param picture
  */
 export function optimizeThumbnails(picture) {
-  picture
-    .querySelectorAll('img')
-    .forEach((img) => {
-      img
-        .closest('picture')
-        .replaceWith(
-          createOptimizedPicture(
-            img.src,
-            img.alt,
-            true,
-            img.width,
-            img.height,
-            [{ width: '768' }],
-          ),
-        );
-    });
+  createOptimizedPicture(
+    picture,
+    true,
+    [{ width: '768' }],
+  );
 }
 
 export default function decorate(block) {
