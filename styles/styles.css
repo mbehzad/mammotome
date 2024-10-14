@@ -1192,5 +1192,5 @@ main {
 
 main > div {
   content-visibility: auto;
-  contain-intrinsic-size: 100vh;
+  contain-intrinsic-size: auto 100vh;
 }
